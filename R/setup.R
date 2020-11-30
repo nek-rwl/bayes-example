@@ -1,6 +1,7 @@
 library(tidyverse)
 library(rstan)
 library(rstanarm)
+library(brms)
 
 rstan_options(auto_write = TRUE)
 
