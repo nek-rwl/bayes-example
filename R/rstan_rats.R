@@ -60,7 +60,7 @@ model {
 }
 generated quantities {
   real alpha0;
-  alpha0 <- mu_alpha - xbar * mu_beta;
+  alpha0 = mu_alpha - xbar * mu_beta;
 }
 "
 
