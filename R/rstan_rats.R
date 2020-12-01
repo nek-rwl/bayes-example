@@ -11,6 +11,9 @@ rats <- y %>%
   pivot_longer(-ID, "day", names_prefix = "day", values_to = "y") %>%
   mutate(x = as.numeric(day), x = x - mean(x))
 
+make_stancode(bf(y ~ 1 + x + (1 + x | ID)),
+              data = rats)
+
 mod_brms_rats <- brm(bf(y ~ 1 + x + (1 + x | ID)),
                      data = rats)
 

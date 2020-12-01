@@ -3,12 +3,16 @@ y <- d$y
 
 dat <- list(N = N, K = ncol(X), y = y, X = X)
 
-stanmodelcode <- "
+stanmodelcode_r2 <- "
 data {                      // Data block
   int<lower=1> N;           // Sample size
   int<lower=1> K;           // Dimension of model matrix
   matrix[N, K] X;           // Model Matrix
   vector[N] y;              // Target variable
+}
+
+transformed data {
+  real totalss = dot_self(y - mean(y));
 }
 
 parameters {                // Parameters block
@@ -27,10 +31,20 @@ model {                     // Model block
   // likelihood
   y ~ normal(mu, sigma);
 }
+
+generated quantities {
+  real rss;
+  real R2;
+  vector[N] mu;
+
+  mu = X * beta;
+  rss = dot_self(y - mu);
+  R2 = 1 - (rss / totalss);
+}
 "
 
-mod_stan <- stan(model_code = stanmodelcode, data = dat)
+mod_stan_r2 <- stan(model_code = stanmodelcode_r2, data = dat)
 
-mod_stan
+mod_stan_r2
 
-extract(mod_stan)$beta[, 1]
+extract(mod_stan_r2)$R2
