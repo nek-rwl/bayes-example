@@ -18,8 +18,8 @@ transformed parameters {
 }
 model {
   // priors
-  mu ~ normal(0, 5);
-  tau ~ cauchy(0, 5);
+  mu ~ normal(0, 20);
+  tau ~ cauchy(0, 20);
   eta ~ normal(0, 1);
 
   // model likelihood
@@ -29,4 +29,4 @@ model {
 
 mod_stan_schools <- stan(model_code = modelcode_schools, data = schools_dat)
 
-mod_stan_schools
+print(mod_stan_schools, pars = c("theta", "mu", "tau"))
